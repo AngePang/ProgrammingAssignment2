@@ -24,6 +24,21 @@ makeCacheMatrix <- function(x = matrix()) {
 
 cacheSolve <- function(x, ...) {
         ## Return a matrix that is the inverse of 'x'
+  inv <- x$getinv()
+  
+  if(!is.null(inv)) {
+    message("getting cached data")
+    return(inv)
+  }
+  
+  data <- x$get()
+  
+  if (nrow(data) != ncol(data)) stop("matrix is invertible")
+  if (abs(det(data))<1e-10) stop("matrix is singular")
+  
+  inv <- solve(data, ...)
+  x$setinv(inv)
+  inv
 }
 
 ## Just try to add some comments as practice in git...
